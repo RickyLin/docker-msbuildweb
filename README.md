@@ -1,2 +1,2 @@
 # docker-msbuildweb
-Dockerfile for Visual Studio Build Tools 2017 with NuGet 4.1 to compile web projects.
+Dockerfile for Visual Studio Build Tools 2017 and NuGet 4.1 to compile .NET web projects.
