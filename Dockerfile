@@ -6,14 +6,16 @@ FROM microsoft/windowsservercore:1709
 # Download useful tools to C:\Bin.
 ADD https://dist.nuget.org/win-x86-commandline/v4.1.0/nuget.exe C:\\Bin\\nuget.exe
 
-# Copy my offline installer to image
-COPY \\MSBuildTools2017 C:\\Installer
+# Download the Build Tools bootstrapper outside of the PATH.
+ADD https://aka.ms/vs/15/release/vs_buildtools.exe C:\\TEMP\\vs_buildtools.exe
 
-# Add C:\Bin to PATH install Build Tools
-RUN setx /m PATH "%PATH%;C:\Bin;C:\BuildTools\MSBuild\15.0\bin" \
-  && CD Installer && vs_buildtools.exe --quiet --wait --nocache --norestart --installPath C:\BuildTools \
+# Add C:\Bin to PATH and install Build Tools excluding workloads and components with known issues.
+RUN setx /m PATH "%PATH%;C:\Bin" \
+  && C:\TEMP\vs_buildtools.exe --quiet --wait --norestart --nocache --installPath C:\BuildTools \
   --add Microsoft.VisualStudio.Workload.MSBuildTools \
-  --add Microsoft.VisualStudio.Workload.WebBuildTools --includeRecommended --includeOptional \
+  --add Microsoft.VisualStudio.Workload.WebBuildTools \
+  --includeRecommended \
+  --includeOptional \
   || IF "%ERRORLEVEL%"=="3010" EXIT 0
 
 # Start developer command prompt with any other commands specified.
