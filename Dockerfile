@@ -1,7 +1,7 @@
 # inspired by instruction: https://docs.microsoft.com/en-us/visualstudio/install/build-tools-container
 # workload and component id for build tools: https://github.com/MicrosoftDocs/visualstudio-docs/blob/master/docs/install/workload-component-id-vs-build-tools.md
 
-FROM microsoft/windowsservercore:1709
+FROM microsoft/windowsservercore:latest
 
 # Download useful tools to C:\Bin.
 ADD https://dist.nuget.org/win-x86-commandline/v4.1.0/nuget.exe C:\\Bin\\nuget.exe
